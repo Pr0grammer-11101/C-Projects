@@ -1,5 +1,12 @@
 #include<stdio.h>
 
+/*
+ * CREDITS:-----------------------------------
+ * https://www.youtube.com/watch?v=MZaf_9IZCrc
+ * ___________________________________________
+*/
+
+
 void Partition(int[], int);
 
 void main()
