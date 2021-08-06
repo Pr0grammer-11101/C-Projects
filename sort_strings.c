@@ -51,7 +51,7 @@ int main(void)
 		{
 			if((int)s[j][0]>(int)s[j+1][0])  // compares the 0th characters of each string
 			{
-				temp=s[j];
+				temp=s[j];  // here we are swapping the base addresses
 				s[j]=s[j+1];
 				s[j+1]=temp;
 			}
