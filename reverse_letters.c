@@ -4,13 +4,13 @@ void reverse(char[]);
 
 int main(void)
 {
-	char s[30]="";
+	char s[30]="";  // assigning '\0' to each element of character array s
 	int count=0, i=0;
 
 	printf("enter a string....");
 	gets(s);
 
-	while(s[i]!='\0')
+	while(s[i]!='\0')  // calculating the length of the string
 	{
 		count++;
 		i++;
@@ -29,7 +29,7 @@ void reverse(char s[])
 {
 	int i, j, k;
 	j=0;
-	char s2[30]=""; // assigning '\0' to each element in the string s2
+	char s2[30]="";
 	i=0;
 	while(s[i]!='\0')
 	{
