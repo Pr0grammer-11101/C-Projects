@@ -36,7 +36,7 @@ void remove_spaces(char *s, int l)
         if(s[i]==' ')
         {
             space_count++;
-            if(space_count>=2)
+            if(space_count==2)  // if there are more than 1 whitespaces
             {
                 j=i;
                 while(j<l-1)
@@ -67,5 +67,5 @@ void remove_spaces(char *s, int l)
 
     printf("\n\nThe string after removing the extra spaces is....\n\n");
     puts(s);
-    
+
 }
