@@ -10,7 +10,6 @@
 int main(void)
 {
 	int a[MAX_ROW][MAX_COL]={0}, x, y, tmpy=0, n_books=0, n, nm, count=0; 
-    // indicator to check if an extra input has been provided by the user while using the "3 x" query.....
 	
 	printf("Hello! I am Libo the library bot.\n");
 	printf("I help customers to donate their books.\n");
