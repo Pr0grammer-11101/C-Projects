@@ -6,7 +6,7 @@
 //Just a mini project
 // Got this inspiration from HackerRank while I was trying solve a problem(this one is that problem)
 // and ended up creating this bot named "Libo" using static 2d arrays(the problem asked me to use dynamic arrays).
-// I will push the same program again after soving using dynamic arrays
+// I will push the same program again after solving using dynamic arrays
 int main(void)
 {
 	int a[MAX_ROW][MAX_COL]={0}, x, y, tmpy=0, n_books=0, n, nm, count=0; 
