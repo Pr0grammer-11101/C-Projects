@@ -5,6 +5,7 @@
 #define MAX 40
 
 // my library record mangement bot.
+// program needs more working upon!!!
 
 int main(void)
 {
