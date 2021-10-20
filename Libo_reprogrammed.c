@@ -1,135 +1,185 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<ctype.h>
 #include<string.h>
-#define MAX 40
+#include<conio.h>
 
-// my library record mangement bot.
-// program needs more working upon!!!
 
 int main(void)
 {
-	int **store_books, nm, x, y, tmpy=0, no_of_shelves, books;
-	char *query;
-	query=(char*)malloc(30);
-	
-	printf("\n\nHELLO! I am Libo, the library management bot.\nI have been reprogrammed.\n\n");
-	printf("\n\nMy task is to maintain records of donators who donated books in the last couple of days to the library.\n\n");
-	printf("\n\nQueries that you might want to know in order to donate, \nview and check the number of books that you have donated.\n\n");
-	printf("1)\"insert\" \n\"x\" \"y\"  -> insert a book with y pages in the xth shelf.\n");
-	printf("2) \"print\" \n\"x\" \"y\"  -> print the number of pages in the yth book in the xth shelf.\n");
-	printf("3)\"print_all\" \n\"x\"  -> print the number of books in the xth shelf.\n\n");
+	int *no_of_books, no_of_shelves, x, y, tmpy=0, **no_of_pages, space, books, nm;
+	char ans, *username;
 
-	printf("enter the number of shelves: ");
-	scanf("%d", &no_of_shelves);
-	printf("enter the number of books: ");
-	scanf("%d", &books);
+	FILE *f;
 
-	int *no_of_books;
 
-	no_of_books=(int*)malloc(no_of_shelves*sizeof(int));
-	for(int i=0; i<no_of_shelves; i++)
-	{
-		no_of_books[i]=0;
-	}
+	username=(char*)calloc(16, sizeof(char));
 
-	store_books=(int**)malloc(no_of_shelves*sizeof(int *));
-
-	for(int i=0; i<no_of_shelves; i++)
-	{
-		store_books[i]=(int*)malloc(MAX*sizeof(int));
-	}
-
-	for(int i=0; i<no_of_shelves; i++)
-	{
-		for(int j=0; j<MAX; j++)
-		{
-			store_books[i][j]=0;
-		}
-	}
-	
-	printf("\n\n\n\nEnter your queries.......\n\n\n");
-
+	printf("HELLO!! I AM LIBO, THE LIBRARY MANAGEMENT BOT.\n\n");
+	printf("I keep track of the names of donators of books.....\n\n");
+	printf("\n\nAre you here to donate books?(y/n): ");
+	scanf("%c", &ans);
 	getchar();
-	
-	
-	while(books)
+
+	if(ans=='y' || ans=='Y')
 	{
-		printf("Queries\n\n");
-		printf(">");
+		printf("\n\nThe queries that you will be needing......\n\n");
+		printf("\n1 x y -> \"insert a book of y pages in the xth shelf\"\n\n");
+		printf("\n2 x y -> \"print the number of pages of yth book in the xth shelf\"\n\n");
+		printf("\n3 x -> \"print the number of books in xth shelf\"\n\n");
 
-		gets(query);
+get_username:
 
-		for(int i=0; query[i]!='\0'; i++)
+
+		printf("Please enter your username(if you don't have any please create by entering it(must be 8-16 characters long)): ");
+		gets(username);
+
+		if(strlen(username)==0 || strlen(username)>16)
 		{
-			query[i]=tolower(query[i]);
-
+			printf("\n\nUSERNAME TOO LONG!!! ENTER AGAIN!!\n\n");
+			goto get_username;
 		}
 
-		if(strcmp(query, "insert")==0)
-		{
-			scanf("%d%d", &x, &y);
-			getchar();
+		space=16-strlen(username);
 
-			if(store_books[x][tmpy]!=0)
+		printf("enter the number of shelves: ");
+		scanf("%d", &no_of_shelves);
+
+		printf("enter the number of books: ");
+		scanf("%d", &books);
+
+		f=fopen("D:\\Special_projects\\Library_record_file.txt", "a");
+
+		if(f==NULL)
+		{
+			printf("\n\nCANNOT OPEN FILE!!!\n\n");
+			exit(0);
+		}
+
+		fprintf(f, "%s", username);
+
+		for(int i=0; i<space; i++)
+		{
+			fprintf(f, " ");
+		}
+
+		fprintf(f, "%d\t", books);
+
+		fclose(f);
+
+		system("echo %time%\t%date% >> D:\\Special_projects\\Library_record_file.txt");
+
+
+		no_of_books=(int*)calloc(no_of_shelves, sizeof(int));
+
+		no_of_pages=(int**)malloc(no_of_shelves*sizeof(int *));
+
+		for(int i=0; i<no_of_shelves; i++)
+		{
+			no_of_pages[i]=(int*)calloc(50, sizeof(int)); // max 50 books
+		}
+
+		printf("\n\nPlease enter your queries.....\n\n");
+
+		while(books)
+		{
+			printf("Query>\n\n");
+			printf(">");
+			scanf("%d", &nm);
+			if(nm==1)
 			{
-				printf("\n\nin shelf %d, space occupied, inserting book in the next empty space of shelf %d\n\n", x, x);
-				while(store_books[x][tmpy]!=0)
+				scanf("%d %d", &x, &y);
+
+				if(x<0 || x>no_of_shelves)
 				{
-					tmpy++;
-					if(store_books[x][tmpy]==0)
-					{
-						store_books[x][tmpy]=y;
-						printf("\n\nBOOK INSERTION SUCCESSFUL!!!!!\n\n");
-						no_of_books[x]++;
-						break;
-					}
+					printf("\n\nCANNOT INSERT BOOK!! INVALID VALUE FOR SHELF ENTERED!!!\n\n");
+					continue;
 				}
+
+				if(no_of_pages[x][tmpy]!=0)
+				{
+					printf("\nin shelf %d, space occupied, inserting book in next emtpy space in shelf %d\n\n", x, x);
+					while(no_of_pages[x][tmpy]!=0)
+					{
+						tmpy++;
+						if(no_of_pages[x][tmpy]==0)
+						{
+							no_of_pages[x][tmpy]=y;
+							printf("\n\nBOOK INSERTION SUCCESSFUL!!!\n\n");
+							tmpy=0;
+							break;
+						}
+					}
+
+				}
+
+				else
+				{
+					no_of_pages[x][tmpy]=y;
+					printf("\n\nBOOK INSERTION SUCCESSFUL!!!\n\n");
+				}
+
+				
+
+				no_of_books[x]++;
+				books--;
+			}
+
+			else if(nm==2)
+			{
+				scanf("%d %d", &x, &y);
+
+				if(x<0 || x>no_of_shelves)
+				{
+					printf("\n\nCANNOT DISPLAY PAGE NUMBERS!! INVALID SHELF OR BOOK NUMBER ENTERED!!!\n\n\n");
+					continue;
+				}
+
+				else if(y<0 || y>50)
+				{
+					printf("\n\nCANNOT DISPLAY PAGE NUMBERS!! INVALID SHELF OR BOOK NUMBER ENTERED!!\n\n\n");
+					continue;
+				}
+
+				printf("\n\n%d\n\n", no_of_pages[x][y]);
+			}
+
+			else if(nm==3)
+			{
+				scanf("%d", &x);
+				if(x<0 || x>no_of_shelves)
+				{
+					printf("\n\nCANNOT DISPLAY NUMBER OF BOOKS!! INVALID SHELF NUMBER ENTERED!!!\n\n");
+					continue;
+				}
+
+				printf("\n\n%d\n\n", no_of_books[x]);
 			}
 
 			else
 			{
-				store_books[x][tmpy]=y;
-				no_of_books[x]++;
-				printf("\n\nBOOK INSERTION SUCCESSFUL!!!\n\n");
+				printf("\n\nINAVLID QUERY!!!!\n\n");
+				continue;
 			}
-
-			books--;
 		}
 
-		else if(strcmp(query, "print")==0)
-		{
-			scanf("%d%d", &x, &y);
-			getchar();
-			printf("\n\n%d\n\n", store_books[x][y]);
-		}
-
-		else if(strcmp(query, "print_all")==0)
-		{
-			scanf("%d", &x);
-			getchar();
-			printf("\n\n%d\n\n", no_of_books[x]);
-			
-		}
-
-		else
-		{
-			printf("\n\n\nERRORNOUS QUERY!!!\n\n");
-		}
-
-
+		
 	}
 
-	free(no_of_books);
 
-	free(query);
+	else
+	{
+		printf("\n\nI suggest you go to my sister Bibo(Book Incharge Bot) then.\n\n");
+	}
 
 	for(int i=0; i<no_of_shelves; i++)
 	{
-		free(store_books[i]);
+		free(no_of_pages[i]);
 	}
 
-	free(store_books);
+	free(no_of_pages);
+
+	free(no_of_books);
+	free(username);
 
 	return 0;
 }
